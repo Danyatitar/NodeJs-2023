@@ -15,16 +15,15 @@ console.log(add(2)(3)(4)());
 
 // Завдання 2
 function isAnagram(str1, str2) {
-  for (let i = 0; i < str1.length; i++) {
-    if (str2.indexOf(str1[i]) === -1) {
-      return false;
-    }
-  }
-  return true;
+  let y = str1.split("").sort().join("");
+  let z = str2.split("").sort().join("");
+
+  return y === z;
 }
 
 console.log(isAnagram("listen", "silent"));
 console.log(isAnagram("haad", "wodf"));
+console.log(isAnagram("listen", "silentn"));
 
 // Завдання 3
 function deepClone(obj) {
