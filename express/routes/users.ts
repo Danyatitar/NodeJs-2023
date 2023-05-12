@@ -5,8 +5,8 @@ import createValidation from "../middleware/createValidation.mdware";
 import { IUser } from "../types/IUser";
 const router: Router = express.Router();
 
-router.get("/", (req: Request, res: Response<IUser[]>) => {
-  const users: Array<IUser> = JSON.parse(
+router.get("/", async (req: Request, res: Response<IUser[]>) => {
+  const users: Array<IUser> = await JSON.parse(
     fs.readFileSync("./data/users.json", "utf8")
   );
   res.json(users);
@@ -15,8 +15,8 @@ router.get("/", (req: Request, res: Response<IUser[]>) => {
 router.get(
   "/:id",
   [validateUserExists],
-  (req: Request<{ id: string }>, res: Response<IUser>) => {
-    const users: Array<IUser> = JSON.parse(
+  async (req: Request<{ id: string }>, res: Response<IUser>) => {
+    const users: Array<IUser> = await JSON.parse(
       fs.readFileSync("./data/users.json", "utf8")
     );
 
@@ -29,8 +29,8 @@ router.get(
 router.patch(
   "/:id",
   [validateUserExists],
-  (req: Request<{ id: string }>, res: Response<string>) => {
-    let users: Array<IUser> = JSON.parse(
+  async (req: Request<{ id: string }>, res: Response<string>) => {
+    let users: Array<IUser> = await JSON.parse(
       fs.readFileSync("./data/users.json", "utf8")
     );
     users = users.map((user) => {
@@ -49,8 +49,8 @@ router.patch(
 router.delete(
   "/:id",
   [validateUserExists],
-  (req: Request<{ id: string }>, res: Response<string>) => {
-    let users: Array<IUser> = JSON.parse(
+  async (req: Request<{ id: string }>, res: Response<string>) => {
+    let users: Array<IUser> = await JSON.parse(
       fs.readFileSync("./data/users.json", "utf8")
     );
     users = users.filter((user) => user.id !== parseInt(req.params.id));
@@ -59,17 +59,22 @@ router.delete(
   }
 );
 
-router.post("/", [createValidation], (req: Request, res: Response<string>) => {
-  let users: Array<IUser> = JSON.parse(
-    fs.readFileSync("./data/users.json", "utf8")
-  );
-  users.push({
-    id: req.body.id,
-    name: req.body.name ? req.body.name : "",
-    username: req.body.username,
-  });
-  fs.writeFileSync("./data/users.json", JSON.stringify(users), "utf8");
-  res.send("user was added");
-});
+router.post(
+  "/",
+  [createValidation],
+  async (req: Request, res: Response<string>) => {
+    let users: Array<IUser> = await JSON.parse(
+      fs.readFileSync("./data/users.json", "utf8")
+    );
+    const id = [...users].sort((a, b) => b.id - a.id)[0].id + 1;
+    users.push({
+      id: id,
+      name: req.body.name ? req.body.name : "",
+      username: req.body.username,
+    });
+    fs.writeFileSync("./data/users.json", JSON.stringify(users), "utf8");
+    res.send("user was added");
+  }
+);
 
 export default router;

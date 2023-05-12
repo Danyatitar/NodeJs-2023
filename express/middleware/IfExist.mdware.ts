@@ -1,13 +1,13 @@
 import express, { Request, Response, NextFunction } from "express";
 import fs from "fs";
 import { IUser } from "../types/IUser";
-function validateUserExists(
+async function validateUserExists(
   req: Request<{ id: string }>,
   res: Response<string>,
   next: NextFunction
 ) {
   let id = parseInt(req.params.id);
-  const users: Array<IUser> = JSON.parse(
+  const users: Array<IUser> = await JSON.parse(
     fs.readFileSync("./data/users.json", "utf8")
   );
   const user = users.find((user) => user.id === id);
