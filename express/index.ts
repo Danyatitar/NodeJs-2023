@@ -1,7 +1,7 @@
 import express from "express";
-import dotenv from "dotenv";
 import { Express } from "express";
 import userRouter from "./routes/users";
+import dotenv from "dotenv";
 const app: Express = express();
 dotenv.config();
 const port = process.env.PORT;

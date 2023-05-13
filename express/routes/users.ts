@@ -1,5 +1,6 @@
-import express, { Request, Response, Router } from "express";
-import fs from "fs";
+import { Request, Response, Router } from "express";
+import express from "express";
+import * as fs from "fs";
 import validateUserExists from "../middleware/IfExist.mdware";
 import createValidation from "../middleware/createValidation.mdware";
 import { IUser } from "../types/IUser";

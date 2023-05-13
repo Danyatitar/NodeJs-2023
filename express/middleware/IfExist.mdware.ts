@@ -1,5 +1,5 @@
-import express, { Request, Response, NextFunction } from "express";
-import fs from "fs";
+import { Request, Response, NextFunction } from "express";
+import * as fs from "fs";
 import { IUser } from "../types/IUser";
 async function validateUserExists(
   req: Request<{ id: string }>,
