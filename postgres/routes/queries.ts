@@ -6,25 +6,10 @@ const router: Router = express.Router();
 
 router.get("/task1", (req: Request, res: Response) => {
   console.log(db);
-  db.query(
-    `select users.id, users.name, users.avatar_url, channels.photo_url,channels.description, channels.created_at 
-  from users join channels on channels.user_id=users.id order by channels.created_at desc`,
-    (err, result) => {
-      res.json(result.rows);
-    }
-  );
 });
 
 router.get("/task2", (req: Request, res: Response) => {
   console.log(db);
-  db.query(
-    `select videos.title, videos.description,videos.preview_url, videos.file_url, videos.duration, 
-    videos.published_at, count(*) as likes 
-    from videos join likes on likes.video_id=videos.id where likes.positive=true group by videos.id order by likes desc limit 5`,
-    (err, result) => {
-      res.json(result.rows);
-    }
-  );
 });
 
 router.get("/task3", (req: Request, res: Response) => {
